@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pess.Web", "Pess.Web\Pess.Web.csproj", "{3EFCB122-CBE4-45FE-B808-3E969D097D1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pess.Web", "Pess.Web\Pess.Web.csproj", "{3EFCB122-CBE4-45FE-B808-3E969D097D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pess.Data", "Pess.Data\Pess.Data.csproj", "{F4B292A9-270B-435F-B2CD-D3B1DC573E28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pess.Data", "Pess.Data\Pess.Data.csproj", "{F4B292A9-270B-435F-B2CD-D3B1DC573E28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pess.Data.Xml", "Pess.Data.Xml\Pess.Data.Xml.csproj", "{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F4B292A9-270B-435F-B2CD-D3B1DC573E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4B292A9-270B-435F-B2CD-D3B1DC573E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4B292A9-270B-435F-B2CD-D3B1DC573E28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

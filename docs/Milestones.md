@@ -57,6 +57,7 @@
 - Value objects support
 - Event Store browser
 - Updated documentation
+- Quality of code and comments revision
 
 ## Future
 
