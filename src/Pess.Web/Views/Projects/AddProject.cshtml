@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ProjectViewModel>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Projects</h1>
+            <hr />
+
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Project name</th>
+                </tr>
+                @foreach (ProjectViewModel project in Model)
+                {
+                    <tr>
+                        <td>@project.Id</td>
+                        <td>@project.Name</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

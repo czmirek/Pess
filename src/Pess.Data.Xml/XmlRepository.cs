@@ -10,7 +10,11 @@
 
     public class PessXmlRepository : IPessRepository
     {
-        private static readonly Dictionary<ProjectId, Project> projects = new Dictionary<ProjectId, Project>();
+        private static readonly Root root = new Root()
+        {
+            Aggregates = new List<Aggregate>(),
+            Projects = new List<Project>()
+        };
         private static readonly IMapper mapper;
         private static readonly object repoLock = new object();
         private const string xmlFile = "pess_data.xml";
@@ -28,67 +32,63 @@
                 using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas()))
                 {
                     DataContractSerializer ser = new DataContractSerializer(typeof(Root));
-                    Root pessXmlRoot = (Root)ser.ReadObject(reader, true);
-                    projects = pessXmlRoot.Projects.ToDictionary(k => ((IPessProject)k).Id);
+                    root = (Root)ser.ReadObject(reader, true);
                 }
             }
         }
 
         public AggregateId CreateAggregate(IPessAggregate newAggregate)
         {
-            throw new NotImplementedException();
-        }
+            AggregateId newId = (AggregateId)Guid.NewGuid().ToString();
 
-        public IPessAggregate CreateAggregateAsync(string name)
-        {
-            throw new System.NotImplementedException();
+            Aggregate aggregateModel = mapper.Map<Aggregate>(newAggregate);
+            aggregateModel.Id = newId.Value;
+
+            root.Aggregates.Add(aggregateModel);
+            Save();
+
+            return newId;
         }
 
         public ProjectId CreateProject(IPessProject newProject)
         {
-            throw new System.NotImplementedException();
+            ProjectId newId = (ProjectId)Guid.NewGuid().ToString();
+
+            Project projectModel = mapper.Map<Project>(newProject);
+            projectModel.Id = newId.Value;
+
+            root.Projects.Add(projectModel);
+            Save();
+
+            return newId;
         }
 
         public IPessAggregate GetAggregate(AggregateId aggregateId)
-        {
-            throw new System.NotImplementedException();
-        }
+            => root.Aggregates.FirstOrDefault(a => ((IPessAggregate)a).Id == aggregateId);
 
         public IPessProject GetProject(ProjectId projectId)
-        {
-            throw new System.NotImplementedException();
-        }
+            => root.Projects.FirstOrDefault(a => ((IPessProject)a).Id == projectId);
 
         public IEnumerable<IPessAggregate> ListAggregates()
-        {
-            throw new System.NotImplementedException();
-        }
+            => root.Aggregates;
 
         public IEnumerable<IPessProject> ListProjects()
-        {
-            throw new System.NotImplementedException();
-        }
+            => root.Projects;
+
+        public IEnumerable<IPessAggregate> ListAggregates(ProjectId projectId)
+            => root.Aggregates.Where(a => ((IPessAggregate)a).ProjectId == projectId);
 
         private void Save()
         {
             lock (repoLock)
             {
-                Root xmlRoot = new Root()
-                {
-                    Projects = projects.Values.ToList()
-                };
                 using (FileStream writer = new FileStream(xmlFile, FileMode.Create))
                 {
                     DataContractSerializer ser = new DataContractSerializer(typeof(Root));
-                    ser.WriteObject(writer, xmlRoot);
+                    ser.WriteObject(writer, root);
                 }
 
             }
-        }
-
-        public IEnumerable<IPessAggregate> ListAggregates(ProjectId projectId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

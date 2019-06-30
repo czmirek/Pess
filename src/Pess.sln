@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pess.Web", "Pess.Web\Pess.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pess.Data", "Pess.Data\Pess.Data.csproj", "{F4B292A9-270B-435F-B2CD-D3B1DC573E28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pess.Data.Xml", "Pess.Data.Xml\Pess.Data.Xml.csproj", "{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pess.Data.Xml", "Pess.Data.Xml\Pess.Data.Xml.csproj", "{4AE63A4B-DDFE-4EF3-9818-C5124EE72B73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

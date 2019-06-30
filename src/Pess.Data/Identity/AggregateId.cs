@@ -1,6 +1,5 @@
 ﻿namespace Pess.Data
 {
-
     using System;
 
     [Serializable]
@@ -9,7 +8,6 @@
     /// </summary>
     public readonly struct AggregateId : IComparable<AggregateId>, IComparable<AggregateId?>, IEquatable<AggregateId>, IEquatable<AggregateId?>
     {
-
         /// <summary>
         /// Determines whether the type of the Value property is nullable or not.
         /// This information is required in operator overloading methods where 
@@ -37,15 +35,24 @@
         /// <param name="value">Identity value</param>
         public AggregateId(string value)
         {
+            if (ValueIsNullable)
+            {
+#pragma warning disable CS0472
+                if (value == null)
+                {
+                    throw new InvalidOperationException("The identity " + nameof(AggregateId) + " cannot have a null value. To use null, set the identity property as nullable (\"{nameof(AggregateId)}?\").");
+                }
+#pragma warning restore CS0472
+            }
             Value = value;
         }
 
         /// <summary>
-        /// Creates a new value of AggregateId
+        /// Creates a new value of <see cref="AggregateId"/>.
         /// </summary>
-        /// <param name="localAggregate">Identity value</param>
+        /// <param name="localAggregateId">Identity value</param>
         /// <returns>Identity struct</returns>
-        public static AggregateId New(string localAggregate) => new AggregateId(localAggregate);
+        public static AggregateId New(string localAggregateId) => new AggregateId(localAggregateId);
 
         /// <summary>
         /// Checks whether two identity values are equal.
@@ -63,7 +70,7 @@
         public bool Equals(AggregateId? other) => CompareTo(other) == 0;
 
         /// <summary>
-        /// Checks whether two values of AggregateId are equal.
+        /// Checks whether two values of <see cref="AggregateId"/> are equal.
         /// </summary>
         /// <param name="other">Other identity struct.</param>
         /// <returns>True if identities are equal. False otherwise.</returns>
@@ -76,157 +83,108 @@
         }
 
         /// <summary>
-        /// Compares values of two AggregateId identities. If the value is nullable then
-        /// null values precede non-null values. Non-null values are compared using
-        /// CompareTo method of the value type.
+        /// Compares values of two <see cref="AggregateId"/> identities.
         /// </summary>
         /// <param name="other">Other identity struct.</param>
-        /// <returns>0 if two AggregateId are equal, 1 if this AggregateId comes after the other AggregateId and -1 if this AggregateId comes before the other AggregateId.</returns>
-        public int CompareTo(AggregateId other)
-        {
-            if (ValueIsNullable)
-            {
-                // this code was generated from snippet
-                // the snippet does not know whether the Value type chosen
-                // is nullable or not. Therefore we disable the null comparison
-                // warning just for convenience.
-#pragma warning disable CS0472
-                if (Value == null && other.Value == null)
-                    return 0;
-
-                if (Value == null && other.Value != null)
-                    return -1;
-
-                if (Value != null && other.Value == null)
-                    return 1;
-#pragma warning restore CS0472
-
-            }
-            return Value.CompareTo(other.Value);
-        }
+        /// <returns>0 if two <see cref="AggregateId"/> are equal, 1 if this <see cref="AggregateId"/> comes after the other <see cref="AggregateId"/> and -1 if this <see cref="AggregateId"/> comes before the other <see cref="AggregateId"/>.</returns>
+        public int CompareTo(AggregateId other) => Value.CompareTo(other.Value);
 
         /// <summary>
         /// Compares the struct with the other nullable struct value.
         /// </summary>
         /// <param name="other">Other nullable struct value</param>
-        /// <returns>0 if two AggregateId are equal, 1 if this AggregateId comes after the other AggregateId and -1 if this AggregateId comes before the other AggregateId.</returns>
+        /// <returns>0 if two <see cref="AggregateId"/> are equal, 1 if this <see cref="AggregateId"/> comes after the other <see cref="AggregateId"/> and -1 if this <see cref="AggregateId"/> comes before the other <see cref="AggregateId"/>.</returns>
         public int CompareTo(AggregateId? other)
         {
             // if nullable has value, compare the struct like a non-nullable
             if (other.HasValue)
                 return other.Value.CompareTo(this);
 
-            // otherwise if the non-nullable value is null, the two are considered equal
-#pragma warning disable CS0472
-            if (ValueIsNullable && Value == null)
-                return 0;
-#pragma warning restore CS0472
-
+            //otherwise the non-null value is considered greater
             return 1;
         }
 
         /// <summary>
-        /// Returns the hashcode of the AggregateId.
+        /// Returns the hashcode of the <see cref="AggregateId"/>.
         /// </summary>
-        /// <returns>Hash code of AggregateId</returns>
-        public override int GetHashCode()
-        {
-            if (ValueIsNullable)
-                return 0;
-
-            return Value.GetHashCode();
-        }
+        /// <returns>Hash code of <see cref="AggregateId"/></returns>
+        public override int GetHashCode() => Value.GetHashCode();
 
         /// <summary>
-        /// Returns the string representation of AggregateId
+        /// Returns the string representation of <see cref="AggregateId"/>.
         /// </summary>
-        /// <returns>String representation of AggregateId</returns>
-        public override string ToString()
-        {
-            if (ValueIsNullable)
-            {
-                // this code was generated from snippet
-                // the snippet does not know whether the Value type chosen
-                // is nullable or not. Therefore we disable the null comparison
-                // warning just for convenience.
-#pragma warning disable CS0472
-                if (Value == null)
-                    return "";
-#pragma warning restore CS0472
-            }
-
-            return Value.ToString();
-        }
+        /// <returns>String representation of <see cref="AggregateId"/></returns>
+        public override string ToString() => Value.ToString();
 
         /// <summary>
-        /// Method for allowing explicit conversion from the primitive type to the AggregateId.
+        /// Method for allowing explicit conversion from the primitive type to the <see cref="AggregateId"/>.
         /// </summary>
         /// <param name="value">Value of the identity</param>
         public static explicit operator AggregateId(string value) => new AggregateId(value);
 
         /// <summary>
-        /// Method for allowing explicit conversion from AggregateId to the identity primitive type.
+        /// Method for allowing explicit conversion from <see cref="AggregateId"/> to the identity primitive type.
         /// </summary>
-        /// <param name="localAggregate">Identity struct</param>
-        public static explicit operator string(AggregateId localAggregate) => localAggregate.Value;
+        /// <param name="localAggregateId">Identity struct</param>
+        public static explicit operator string(AggregateId localAggregateId) => localAggregateId.Value;
 
         /// <summary>
-        /// Overloads the equality operator for comparing the values of two AggregateId.
+        /// Overloads the equality operator for comparing the values of two <see cref="AggregateId"/>.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are equal. False otherwise.</returns>
         public static bool operator ==(AggregateId a, AggregateId b) => a.CompareTo(b) == 0;
 
         /// <summary>
-        /// Overloads the non-equality operator for comparing the values of two AggregateId.
+        /// Overloads the non-equality operator for comparing the values of two <see cref="AggregateId"/>.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are not equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are not equal. False otherwise.</returns>
         public static bool operator !=(AggregateId a, AggregateId b) => !(a == b);
 
         /// <summary>
-        /// Overloads the equality operator for comparing the values of two AggregateId with one
-        /// Aggregate being nullable. AggregateId? null value is considered equal 
-        /// with AggregateId.Value == null. Therefore if the underlying type is nullable and the
+        /// Overloads the equality operator for comparing the values of two <see cref="AggregateId"/> with one
+        /// Aggregate being nullable. <see cref="AggregateId"/>? null value is considered equal 
+        /// with <see cref="AggregateId"/>.Value == null. Therefore if the underlying type is nullable and the
         /// value contains null, that is considered the same thing as if the struct itself was null.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are equal. False otherwise.</returns>
         public static bool operator ==(AggregateId? a, AggregateId b) => b.CompareTo(a) == 0;
 
         /// <summary>
-        /// Overloads the non-equality operator for comparing the values of two AggregateId with one
-        /// Aggregate being nullable.
+        /// Overloads the non-equality operator for comparing the values of two <see cref="AggregateId"/> with one
+        /// <see cref="AggregateId"/> being nullable.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are not equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are not equal. False otherwise.</returns>
         public static bool operator !=(AggregateId? a, AggregateId b) => !(a == b);
 
         /// <summary>
-        /// Overloads the equality operator for comparing the values of two AggregateId with one
-        /// Aggregate being nullable.
+        /// Overloads the equality operator for comparing the values of two <see cref="AggregateId"/> with one
+        /// <see cref="AggregateId"/> being nullable.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are equal. False otherwise.</returns>
         public static bool operator ==(AggregateId a, AggregateId? b) => a.CompareTo(b) == 0;
 
         /// <summary>
-        /// Overloads the non-equality operator for comparing the values of two AggregateId with one
-        /// Aggregate being nullable.
+        /// Overloads the non-equality operator for comparing the values of two <see cref="AggregateId"/> with one
+        /// <see cref="AggregateId"/> being nullable.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are not equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are not equal. False otherwise.</returns>
         public static bool operator !=(AggregateId a, AggregateId? b) => !(a == b);
 
         /// <summary>
-        /// Overloads the equality operator for comparing the values of two AggregateId with one
-        /// Aggregate being nullable.
+        /// Overloads the equality operator for comparing the values of two <see cref="AggregateId"/> with one
+        /// <see cref="AggregateId"/> being nullable.
         /// </summary>
         /// <param name="a">First AggregateId</param>
         /// <param name="b">Second AggregateId</param>
@@ -234,20 +192,20 @@
         public static bool operator ==(AggregateId? a, AggregateId? b) => CompareNullableWithNullable(a, b);
 
         /// <summary>
-        /// Overloads the non-equality operator for comparing the values of two AggregateId with one
-        /// Aggregate being nullable.
+        /// Overloads the non-equality operator for comparing the values of two <see cref="AggregateId"/> with one
+        /// <see cref="AggregateId"/> being nullable.
         /// </summary>
-        /// <param name="a">First AggregateId</param>
-        /// <param name="b">Second AggregateId</param>
-        /// <returns>True if two AggregateId values are not equal. False otherwise.</returns>
+        /// <param name="a">First <see cref="AggregateId"/></param>
+        /// <param name="b">Second <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are not equal. False otherwise.</returns>
         public static bool operator !=(AggregateId? a, AggregateId? b) => !CompareNullableWithNullable(a, b);
 
         /// <summary>
-        /// Private helper method for comparing two nullable AggregateId values.
+        /// Private helper method for comparing two nullable <see cref="AggregateId"/> values.
         /// </summary>
-        /// <param name="a">First nullable value of AggregateId</param>
-        /// <param name="b">Second nullable value of AggregateId</param>
-        /// <returns>True if two AggregateId values are not equal. False otherwise.</returns>
+        /// <param name="a">First nullable value of <see cref="AggregateId"/></param>
+        /// <param name="b">Second nullable value of <see cref="AggregateId"/></param>
+        /// <returns>True if two <see cref="AggregateId"/> values are not equal. False otherwise.</returns>
         private static bool CompareNullableWithNullable(AggregateId? a, AggregateId? b)
         {
             // if neither has value, they are both null and therefore are equal.

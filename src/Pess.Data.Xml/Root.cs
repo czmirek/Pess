@@ -8,5 +8,8 @@
     {
         [DataMember]
         public List<Project> Projects { get; set; }
+
+        [DataMember]
+        public List<Aggregate> Aggregates { get; set; }
     }
 }
